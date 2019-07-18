@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit :
+    {{ product.title }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{product.title}}
+        ({{product.price | number_format(2, ",", " ")}}
+        €)</h1>
+    <p>Dans la catégorie :
+        <a href="{{ path('category_show', {'slug': product.category.slug}) }}">{{ product.category.title }}</a>
+    </p>
+    <p>{{ product.description }}</p>
+
+    <h2>{{ product.ratings | length }}
+        avis client :</h2>
+
+    {% for rating in product.ratings %}
+        <strong>{{rating.author}}</strong>
+        :
+        <blockquote>
+            <em>
+                {{rating.content}}
+            </em>
+        </blockquote>
+        <strong>Note :
+            {{ rating.notation }}
+            / 5</strong>
+        <hr>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Catégorie :
+    {{category.title}}
+{% endblock %}
+
+{% block body %}
+    <h1>Catégorie :
+        {{category.title}}</h1>
+    <p>{{category.description}}</p>
+
+    <h2>{{category.products | length}}
+        produits :</h2>
+
+    {% for product in category.products %}
+        <h3>{{product.title}}</h3>
+        <strong>Prix :
+        </strong>
+        {{ product.price | number_format(2, ',', ' ')}}
+        €
+        <a href="{{ path('product_show', {'category_slug': category.slug, 'slug': product.slug}) }}">Voir le détail</a>
+    {% endfor %}
+{% endblock %}

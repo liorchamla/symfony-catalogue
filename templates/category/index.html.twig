@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue : les catégories
+{% endblock %}
+
+{% block body %}
+    <h1>Les catégories</h1>
+
+    {% for category in categories %}
+        <h2>{{category.title}}</h2>
+        <a href="{{ path('category_show', {'slug': category.slug}) }}">
+            Voir les
+            {{ category.products | length }}
+            produits
+        </a>
+    {% endfor %}
+{% endblock %}
