@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
@@ -52,6 +54,47 @@ class Product
     public function __construct()
     {
         $this->ratings = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     * 
+     * Bonus 3 : générer des slugs à la volée avant d'enregistrer via Cocur\Slugify
+     */
+    public function setupSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
+    }
+
+    /**
+     * Bonus 1 et 2 : obtenir la moyenne des notes d'un produit
+     *
+     * @return float
+     */
+    public function getAvgRatings(): float
+    {
+        /**
+         * Méthode élégante : on fait une réduction du tableau pour avoir le total qu'on divise par le compte
+         */
+        return array_reduce($this->ratings->toArray(), function ($total, Rating $rating) {
+            return $total + $rating->getNotation();
+        }, 0) / $this->ratings->count();
+
+        /**
+         * Methode décomposée
+         */
+        // 1. On calcule le total des notes
+        // $total = 0;
+        // foreach ($this->ratings as $rating) {
+        //     $total += $rating->getNotation();
+        // }
+
+        // 2. On divise par le nombre de notes
+        // $ratingsCount = $this->ratings->count(); // ou simplement count($this->ratings)
+        // return $total / $ratingsCount;
     }
 
     public function getId(): ?int

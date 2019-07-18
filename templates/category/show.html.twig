@@ -18,6 +18,12 @@
         </strong>
         {{ product.price | number_format(2, ',', ' ')}}
         €
+        <br>
+        <small>Note moyenne :
+            {{ ratingsHelper.calculateAvgForProduct(product) | round(2) }}
+            / 5</small>
+        <br>
         <a href="{{ path('product_show', {'category_slug': category.slug, 'slug': product.slug}) }}">Voir le détail</a>
+        <hr>
     {% endfor %}
 {% endblock %}

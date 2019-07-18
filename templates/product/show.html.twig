@@ -7,7 +7,9 @@
 {% block body %}
     <h1>{{product.title}}
         ({{product.price | number_format(2, ",", " ")}}
-        €)</h1>
+        €, noté
+        {{ product.avgRatings | round(2) }}
+        / 5 en moyenne)</h1>
     <p>Dans la catégorie :
         <a href="{{ path('category_show', {'slug': product.category.slug}) }}">{{ product.category.title }}</a>
     </p>

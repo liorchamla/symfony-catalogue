@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Category
 {
@@ -41,6 +43,19 @@ class Category
     public function __construct()
     {
         $this->products = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     * 
+     * Bonus 3 : générer des slugs à la volée avant d'enregistrer via Cocur\Slugify
+     */
+    public function setupSlug()
+    {
+        if (empty($this->slug)) {
+            $slugify = new Slugify();
+            $this->slug = $slugify->slugify($this->title);
+        }
     }
 
     public function getId(): ?int

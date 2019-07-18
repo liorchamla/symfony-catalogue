@@ -18,7 +18,6 @@ class AppFixtures extends Fixture
         for ($c = 0; $c < 5; $c++) {
             $category = new Category;
             $category->setTitle($faker->catchPhrase)
-                ->setSlug($faker->slug)
                 ->setDescription($faker->realText(140));
 
             $manager->persist($category);
@@ -28,7 +27,6 @@ class AppFixtures extends Fixture
             for ($p = 0; $p < $limit; $p++) {
                 $product = new Product;
                 $product->setTitle($faker->catchPhrase)
-                    ->setSlug($faker->slug)
                     ->setDescription($faker->realText(300))
                     ->setPrice($faker->randomFloat(2, 50, 200))
                     ->setCategory($category);
